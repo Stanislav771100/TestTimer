@@ -19,17 +19,17 @@ export const TimerWrapper = () => {
     channel
   ] = useTimerService(time, setTime, setShowStart, timeArray, setTimeArray);
 
-
   useEffect(() => {
     setShowStart(localStorage.getItem("stopTick") ? true : false);
+
     channel.onmessage = (ev) => {
       if (ev.data === "reset") {
         setTimeArray([]);
         setTime(0);
         return;
       }
-      if (ev.data === 'stop') {
-        setShowStart(true)
+      if (ev.data === "stop") {
+        setShowStart(true);
       }
       if (ev.data.timeArr) {
         setTimeArray(ev.data.timeArr);
@@ -38,8 +38,8 @@ export const TimerWrapper = () => {
         setTimeArray(ev.data.timeArr);
       }
       if (ev.data.timeNow) {
-      const timeNow = new Date().getTime();
-      startTimer(1000 - (timeNow - ev.data));
+        const timeNow = new Date().getTime();
+        startTimer(1000 - (timeNow - ev.data));
       }
     };
 
@@ -47,6 +47,10 @@ export const TimerWrapper = () => {
       channel.close();
     };
   }, [channel, startTimer, showStart, timeArray]);
+
+  const generateKey = (pre) => {
+    return `${pre}_${new Date().getTime()}`;
+  };
 
   return (
     <div className="timer-container">
@@ -69,7 +73,7 @@ export const TimerWrapper = () => {
           timeArray.map(
             (time, index) =>
               time !== 0 && (
-                <div className="time-list">
+                <div key={generateKey(time)} className="time-list">
                   <p className="time-text">{`Lap ${index + 1}`}</p>
                   <p className="time-text">{time}</p>
                 </div>
