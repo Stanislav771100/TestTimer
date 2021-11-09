@@ -1,11 +1,48 @@
 .timer-container {
-    width: 300px;
-    height: 600px;
+    width: 350px;
+    min-height: 500px;
     margin: 100px auto;
-    background-color: bisque;
+    background-color: darkslategrey;
     border-radius: 5px;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
+    color: white;
+    padding-left: 10px;
+    padding-right: 10px;
+    
+}
+.time-list {
+    border-top: 1px solid gray;
+    border-bottom: 1px solid gray;
+    width: 100%;
+    height: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 10px;
+    padding-right: 10px;
+
+}
+.time-list p {
+    margin: 0;
+}
+.result-timer {
+    width: 100%;
+    background-color: darkslategrey;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.button-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 10px;
+    padding-right: 10px;
 }

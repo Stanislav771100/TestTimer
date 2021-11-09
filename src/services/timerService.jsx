@@ -1,49 +1,63 @@
-import React, { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 
 
-export const useTimerService = (time, setTime) => {
+export const useTimerService = (time, setTime, setShowStart) => {
+
+
+    const [timeArray, setTimeArray] = useState([time])
+
+    const { localStorage } = window
+
 
     const channel = new BroadcastChannel("timer")
 
+    console.log(JSON.parse(window.localStorage.getItem('currentTime')))
+
 
     const startTimer = useCallback(delay => {
-        window.localStorage.clear('currentTime')
 
         const interval = setInterval(() => {
-            if (window.localStorage.getItem('stopTick')) {
+            if (localStorage.getItem('stopTick')) {
                 channel.close()
                 clearInterval(interval)
                 return
             }
             setTime(time => time + 1);
         }, 1000);
-    }, [channel]);
+    }, [channel, setTime]);
 
 
     const syncItUp = () => {
         const timeNow = new Date().getTime();
-        window.localStorage.clear('stopTick')
+        localStorage.clear('stopTick')
         channel.postMessage(timeNow);
         startTimer(1000);
     };
 
 
     const stopTimer = () => {
-        window.localStorage.setItem('stopTick', true)
+        localStorage.setItem('stopTick', true)
+        setShowStart(true)
     }
 
     const resetTimer = () => {
         setTime(0)
+        setTimeArray([])
+        localStorage.clear('currentTime')
         channel.postMessage('reset')
+        stopTimer()
     }
 
     const newTimer = () => {
-        window.localStorage.setItem('currentTime', time)
-        stopTimer()
-        resetTimer()
+        const storageTimeArr = JSON.parse(window.localStorage.getItem('currentTime'))
+        console.log(storageTimeArr)
+        console.log(timeArray);
+        
+        setTimeArray([...timeArray, time])
+        console.log(timeArray)
     }
 
-    return [newTimer, resetTimer, stopTimer, syncItUp, startTimer, channel]
+    return [newTimer, resetTimer, stopTimer, syncItUp, startTimer, channel, timeArray]
 
 
 }

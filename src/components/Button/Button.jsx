@@ -6,7 +6,7 @@ import './button.css';
 export const Button = ({value, onPress}) => {
 
     return (
-        <div onClick={() => onPress()} className="button-container">
+        <div onClick={() => onPress()} className="button">
             <p>{value}</p>
         </div>
     )
